@@ -1,3 +1,7 @@
+DEPENDENCIES:
+theano: http://deeplearning.net/software/theano/
+numpy
+
 DATA:
 Right now, only the aggregate data is really being used.  To check that 
 you can load the data properly, run
