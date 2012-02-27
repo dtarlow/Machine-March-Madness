@@ -9,8 +9,8 @@ LOCATION_TOURNEY = 2
 
 
 
-def make_simpleest_learning_functions(num_teams, D0, H, D, Hp, reg_param1,
-                                      reg_param2, xform_params=None):
+def make_simplest_learning_functions(num_teams, D0, H, D, Hp, reg_param1,
+                                     reg_param2, xform_params=None):
                             
     # each team just has a mean offensive score and a mean defensive
     # score.  to get a team's predicted score, just average opponents
@@ -69,7 +69,7 @@ def make_simpleest_learning_functions(num_teams, D0, H, D, Hp, reg_param1,
           T.mean(T.sqr(team2_pred_score - team2_scores))
 
     # Define updates
-    params = [offenses0, defenses0]
+    params = [offenses, defenses]
 
     grads  = []
     for p in params:

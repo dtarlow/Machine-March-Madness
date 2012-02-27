@@ -90,7 +90,15 @@ can select between these in the learn_*.py scripts.
 
 
 Some TODOs for the ambitious:
+
 - Load the full data and verify it against the aggregate data.
-- Set up a proper validation/testing framework.
-- Try different objective functions in the theano models
+
+- Set up a proper validation/testing framework, so we can evaluate different methods
+  properly.  Perhaps we want to do leave-one-out cross validation.
+
+- Try different objective functions in the theano models -- what do we actually
+  want to optimize?
+
+- Think about how to better include pace of the game
+
 - Improve the optimization (maybe using momentum, LBFGS, or conjugate gradients?)

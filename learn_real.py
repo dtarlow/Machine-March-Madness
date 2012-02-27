@@ -31,7 +31,7 @@ if __name__ == "__main__":
     MODEL = "simplest"
     if MODEL == "simplest":
         BASE_LEARNING_RATE = .005
-        make_model_fn = make_simple_learning_mf_functions
+        make_model_fn = make_simplest_learning_functions
 
     elif MODEL == "simple_matrix_factorization":
         BASE_LEARNING_RATE = .001

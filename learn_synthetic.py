@@ -15,13 +15,11 @@ if __name__ == "__main__":
     reg_param2 = .001
 
     NUM_ITS = 500
-    learning_rate = .0005
-
 
     MODEL = "simplest"
     if MODEL == "simplest":
-        BASE_LEARNING_RATE = .001
-        make_model_fn = make_simple_learning_mf_functions
+        BASE_LEARNING_RATE = 1.0
+        make_model_fn = make_simplest_learning_functions
 
     elif MODEL == "simple_matrix_factorization":
         BASE_LEARNING_RATE = .001
@@ -51,6 +49,7 @@ if __name__ == "__main__":
     
     for t in range(NUM_ITS):
         obj = 0
+        learning_rate = BASE_LEARNING_RATE / (1.0 + np.sqrt(t))
         for g in range(G):
             obj_g = train_fn(team1_ids[g], team1_locs[g], team2_ids[g], team2_locs[g],
                              team1_scores[g], team2_scores[g], learning_rate)
