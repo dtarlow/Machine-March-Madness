@@ -1,0 +1,92 @@
+DATA:
+Right now, only the aggregate data is really being used.  To check that 
+you can load the data properly, run
+
+> python march_madness_data.py
+
+this should output the following:
+Skipped 1426 entries due to UNK
+After loading simple data
+2006-2007: 5125 games
+2007-2008: 5248 games
+2008-2009: 5332 games
+2009-2010: 5363 games
+After removing tournament games
+2006-2007: 5047 games
+2007-2008: 5161 games
+2008-2009: 5237 games
+2009-2010: 5269 games
+
+So it loaded about 5000 games from each of 4 past seasons.  
+
+If you'd like to dig into the full data, look for 
+
+def load_full_data(self):
+
+in march_madness_data.py.
+
+
+BRACKET:
+We don't have data that specifically identifies which games were a part 
+of the tournament, so we do it programmatically.  Most of the code is
+called automatically when you make a MarchMadnessData object.  To see the
+results, you can run
+
+> python bracket.py
+
+This should output the filled-in tournament bracket for previous seasons.
+It should look like this:
+
+2008-2009
+nav---nav---nav---nav---nav---nav
+raa     |     |     |     |     |   
+lav---lav     |     |     |     |   
+bav           |     |     |     |   
+              |     |     |     |   
+gaj---gaj---gaj     |     |     |   
+aac     |           |     |     |   
+wao---wao           |     |     |   
+iae                 |     |     |   
+                    |     |     |   
+oae---oae---oae---oae     |     |   
+mbq     |     |           |     |   
+max---max     |           |     |   
+cbg           |           |     |   
+              |           |     |   
+sci---sci---sci           |     |   
+scc     |                 |     |   
+aar---aar                 |     |   
+tad                       |     |   
+
+...
+
+The three-letter code mappings to team names are in ./data/YahooTeamCodeMapping.csv.
+
+
+LEARNING:
+There is also starter code for learning, but this is still in progress.
+
+The simplest thing to try is to run
+
+> python learn_synthetic.py
+
+This will run learning with the simplest model, on synthetic data.  The first run
+will take a bit longer at startup, because theano is doing the symbolic differentiation.
+
+
+You can then move on to
+
+> python learn_real.py
+
+This will learn, but on the real data now.  This code is not finished, but it should be
+enough structure to get you started.
+
+In model.py, you can see three different models, of increasing level of complexity.  You
+can select between these in the learn_*.py scripts.
+
+
+Some TODOs for the ambitious:
+- Load the full data and verify it against the aggregate data.
+- Set up a proper validation/testing framework.
+- Try different objective functions in the theano models
+- Improve the optimization (maybe using momentum, LBFGS, or conjugate gradients?)

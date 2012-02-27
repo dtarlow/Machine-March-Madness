@@ -162,7 +162,7 @@ class MarchMadnessData:
         are e.g., NIT tournament games mixed in.
         """
 
-        brackets = {}
+        self.brackets = {}
         self.tournament_starts = {}
         for season in PAST_WINNERS:
             if season not in self.game_results_by_season:  continue
@@ -207,7 +207,7 @@ class MarchMadnessData:
                 
             bracket.make_bracket_structure(team_codes=self.team_codes)
 
-            brackets[season] = bracket
+            self.brackets[season] = bracket
             
 
     def split_postseason_games_from_seasons(self):

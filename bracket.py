@@ -1,6 +1,7 @@
 import pickle
 import numpy
 import re
+from march_madness_data import *
 
 class Bracket:
 
@@ -105,27 +106,18 @@ class Bracket:
 
 
     def simulate_game(self, team1_code, team2_code):
-        team1_id = self.team_code_to_id(team1_code)
-        team2_id = self.team_code_to_id(team2_code)
-
-        s_hat1 = numpy.sum(self.offenses[team1_id] * self.defenses[team2_id])
-        s_hat2 = numpy.sum(self.offenses[team2_id] * self.defenses[team1_id])
-
-        team1_name = self.team_code_to_name(team1_code)
-        team2_name = self.team_code_to_name(team2_code)        
-
-        print "%s %s, %s %s" % (team1_name, s_hat1, team2_name, s_hat2)
-        return (s_hat1, s_hat2)
-
+        # TODO
+        pass
+    
 
 if __name__ == '__main__':
-    b = Bracket()
 
-    # If you want to simulate an individual game, you need Yahoo's team code,
-    # then just use the simulate_game method.
-    #b.simulate_game('mbp', 'aah')
-    #b.simulate_game('nav', 'laq')
-    #b.simulate_game('nav', 'mbp')
-    #b.simulate_game('nav', 'aah')    
+    data = MarchMadnessData()
+
+    for season in data.brackets:
+        print season
+        data.brackets[season].print_full()
+        print
+
 
     
