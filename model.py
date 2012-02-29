@@ -177,8 +177,8 @@ def make_vanilla_pmf_functions(num_teams, D0, H, D, Hp, reg_param1,
     return out_fn, train_fn, params
 
 
-def make_simple_learning_mf_functions(num_teams, D0, H, D, Hp, reg_param1,
-                                      reg_param2, xform_params=None):
+def make_pmf_plus_pace_functions(num_teams, D0, H, D, Hp, reg_param1,
+                                 reg_param2, xform_params=None):
                             
     # D0 : dimension of base latent vectors
     # D  : dimension of transformed latent vectors

@@ -33,13 +33,13 @@ if __name__ == "__main__":
         BASE_LEARNING_RATE = .005
         make_model_fn = make_simplest_learning_functions
 
-    elif MODEL == "pmf":
+    elif MODEL == "pmf":  # probabilistic matrix factorization
         BASE_LEARNING_RATE = .005
         make_model_fn = make_vanilla_pmf_functions
 
-    elif MODEL == "simple_matrix_factorization":
+    elif MODEL == "pmf_with_pace":
         BASE_LEARNING_RATE = .001
-        make_model_fn = make_simple_learning_mf_functions
+        make_model_fn = make_pmf_plus_pace_functions
 
     elif MODEL == "full":
         BASE_LEARNING_RATE = .0001

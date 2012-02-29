@@ -16,14 +16,18 @@ if __name__ == "__main__":
 
     NUM_ITS = 500
 
-    MODEL = "simplest"
+    MODEL = "pmf_with_pace"
     if MODEL == "simplest":
-        BASE_LEARNING_RATE = 1.0
+        BASE_LEARNING_RATE = .005
         make_model_fn = make_simplest_learning_functions
 
-    elif MODEL == "simple_matrix_factorization":
+    elif MODEL == "pmf":  # probabilistic matrix factorization
+        BASE_LEARNING_RATE = .005
+        make_model_fn = make_vanilla_pmf_functions
+
+    elif MODEL == "pmf_with_pace":
         BASE_LEARNING_RATE = .001
-        make_model_fn = make_simple_learning_mf_functions
+        make_model_fn = make_pmf_plus_pace_functions
 
     elif MODEL == "full":
         BASE_LEARNING_RATE = .0001
@@ -31,7 +35,7 @@ if __name__ == "__main__":
 
     else:
         assert False  # unsupported model
-    
+
     out_fn, train_fn, params = \
             make_model_fn(N, D0, H, D, Hp, reg_param1, reg_param2)
 
