@@ -28,10 +28,14 @@ if __name__ == "__main__":
     validation_season = train_seasons.pop(split)
     validation_seasons = [validation_season]
 
-    MODEL = "simplest"
+    MODEL = "pmf"
     if MODEL == "simplest":
         BASE_LEARNING_RATE = .005
         make_model_fn = make_simplest_learning_functions
+
+    elif MODEL == "pmf":
+        BASE_LEARNING_RATE = .005
+        make_model_fn = make_vanilla_pmf_functions
 
     elif MODEL == "simple_matrix_factorization":
         BASE_LEARNING_RATE = .001

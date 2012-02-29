@@ -91,6 +91,92 @@ def make_simplest_learning_functions(num_teams, D0, H, D, Hp, reg_param1,
     return out_fn, train_fn, params
 
 
+def make_vanilla_pmf_functions(num_teams, D0, H, D, Hp, reg_param1,
+                               reg_param2, xform_params=None):
+                            
+    # D0 : dimension of base latent vectors
+    # D  : dimension of transformed latent vectors
+    
+    rng = np.random.RandomState()
+
+    # Initialize latent vectors
+    offense0_vals = np.asarray(rng.uniform(
+        low  = -np.sqrt(6./(num_teams+D0)),
+        high =  np.sqrt(6./(num_teams+D0)),
+        size = (num_teams, D)), dtype=theano.config.floatX)
+    defense0_vals = np.asarray(rng.uniform(
+        low  = -np.sqrt(6./(num_teams+D0)),
+        high =  np.sqrt(6./(num_teams+D0)),
+        size = (num_teams, D)), dtype=theano.config.floatX)
+        
+    offenses0 = theano.shared(value=offense0_vals, name="offenses0")
+    defenses0 = theano.shared(value=defense0_vals, name="defenses0")
+
+    # inputs
+    SUPPORT_BATCH_LEARNING = False  # theano indexing is not cooperating
+    if SUPPORT_BATCH_LEARNING:
+        team1_ids    = T.ivector("team1_ids")
+        team1_locs   = T.ivector("team1_locs")     # 0:home, 1:away, 2:tourney
+        team2_ids    = T.ivector("team2_ids")
+        team2_locs   = T.ivector("team2_locs")     # 0:home, 1:away, 2:tourney
+        team1_scores = T.dvector("team1_scores")
+        team2_scores = T.dvector("team2_scores")
+    else:   # only support stochastic gradient training
+        team1_ids    = T.iscalar("team1_ids")
+        team1_locs   = T.iscalar("team1_locs")     # 0:home, 1:away, 2:tourney
+        team2_ids    = T.iscalar("team2_ids")
+        team2_locs   = T.iscalar("team2_locs")     # 0:home, 1:away, 2:tourney
+        team1_scores = T.dscalar("team1_scores")
+        team2_scores = T.dscalar("team2_scores")
+
+    # learning parameters
+    learning_rate = T.scalar("learning_rate")
+
+    # select appropriate latent vectors
+    team1_offenses = offenses0[team1_ids,:]
+    team1_defenses = defenses0[team1_ids,:]
+    team2_offenses = offenses0[team2_ids,:]
+    team2_defenses = defenses0[team2_ids,:]
+
+    if SUPPORT_BATCH_LEARNING:
+        team1_pred_score = T.sum(team1_offenses * team2_defenses, axis=1)
+        team2_pred_score = T.sum(team2_offenses * team1_defenses, axis=1)
+    else:
+        team1_pred_score = T.sum(team1_offenses * team2_defenses)
+        team2_pred_score = T.sum(team2_offenses * team1_defenses)
+    
+    # regularization terms
+    reg1 = T.mean(T.sqr(offenses0)) + T.mean(T.sqr(defenses0))
+
+    # learning objective
+    obj = T.mean(T.sqr(team1_pred_score - team1_scores)) + \
+          T.mean(T.sqr(team2_pred_score - team2_scores)) + \
+          reg_param1 * reg1
+
+    # Define updates
+    params = [offenses0, defenses0]
+
+    grads  = []
+    for p in params:
+        g = T.grad(obj, p)
+        grads.append(g)
+
+    updates = {}
+    for param, grad in zip(params, grads):
+        updates[param] = param - learning_rate * grad
+
+    # Create and return theano functions
+    out_fn = theano.function([team1_ids, team1_locs, team2_ids, team2_locs],
+                             outputs=[team1_pred_score, team2_pred_score])
+
+    train_fn = theano.function([team1_ids, team1_locs, team2_ids, team2_locs,
+                                team1_scores, team2_scores, learning_rate],
+                               outputs=obj,
+                               updates=updates)
+
+    return out_fn, train_fn, params
+
+
 def make_simple_learning_mf_functions(num_teams, D0, H, D, Hp, reg_param1,
                                       reg_param2, xform_params=None):
                             
