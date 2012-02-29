@@ -91,7 +91,7 @@ if __name__ == "__main__":
             for g, game in enumerate(games):
                 team1_id, team2_id = game[1], game[2]
                 team1_score, team2_score = game[3], game[4]
-                team1_loc, team2_loc = LOCATION_HOME, LOCATION_AWAY
+                team1_loc, team2_loc = LOCATION_TOURNEY, LOCATION_TOURNEY
                 
                 if g % 10 == 0:
                     pred_team1, pred_team2 = out_fn(team1_id, team1_loc,
