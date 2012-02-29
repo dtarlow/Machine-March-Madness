@@ -3,6 +3,7 @@ FULL_DATA_PATH = "%s/Data_20110823" % DATA_PATH
 GAMES_CSV_LOC = "%s/Games.tsv" % FULL_DATA_PATH
 PLAYERS_CSV_LOC = "%s/Players.tsv" % FULL_DATA_PATH
 SIMPLE_DATA_LOC = "%s/GameResults.csv" % DATA_PATH
+#SIMPLE_DATA_LOC = "%s/aggregate.csv" % DATA_PATH
 TEAM_MAPPING_LOC = "%s/YahooTeamCodeMapping.csv" % DATA_PATH
 
 PAST_WINNERS = {
@@ -10,7 +11,7 @@ PAST_WINNERS = {
     "2007-2008" : "kaa",
     "2008-2009" : "nav",
     "2009-2010" : "dau",
-    "2010-2011" : "cbp",  # missing aggregate data for the last few days
+    "2010-2011" : "cbp",
     }
 
 
@@ -61,8 +62,13 @@ class MarchMadnessData:
             date, home_code, away_code, home_score, away_score, home_won = \
                   line.rstrip().split(",")
 
-            year, month, day = date.split("-")
+            try:
+                year, month, day = date.split("-")
+            except:
+                year, month, day = date[:4], date[4:6], date[6:]
+
             year, month, day = int(year), int(month), int(day)
+
             if month < 6:  season = "%s-%s" % (year-1,year)
             else:          season = "%s-%s" % (year,year+1)
 
@@ -71,6 +77,8 @@ class MarchMadnessData:
 
             # We don't have aggregate data for the 2010-2011 tournament
             # at the moment.  Skip as well.
+            #
+            # Update: we have it now
             if season == "2010-2011":  continue
 
             if season not in self.game_results_by_season:
