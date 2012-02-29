@@ -1,7 +1,6 @@
 import numpy as np
 import theano
 import theano.tensor as T
-import matplotlib.pylab as plt
 
 LOCATION_HOME = 0
 LOCATION_AWAY = 1
