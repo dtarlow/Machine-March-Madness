@@ -2,6 +2,9 @@ DEPENDENCIES:
 theano: http://deeplearning.net/software/theano/
 numpy
 
+Note: maccam912 reports that the link above is currently down (Feb 28, 2012) but says, "I see you can still get it with 'easy_install Theano' or downloading it from http://pypi.python.org/pypi/Theano or the repo on github. Just a heads up. I don't use git or github often so I wasn't sure if the issues section was the place to point this out or not."
+
+
 DATA:
 Right now, only the aggregate data is really being used.  To check that 
 you can load the data properly, run
