@@ -99,9 +99,15 @@ if __name__ == "__main__":
                     print "\tTourney %s-%s vs %s-%s" % (pred_team1, pred_team2,
                                                         team1_score, team2_score)
 
-                obj_g = train_fn(team1_id, team2_loc, team2_id, team2_loc,
-                                 team1_score, team2_score, learning_rate)
-                obj += obj_g
+                # for a method like PMF, no parameters are shared across years,
+                # so there's no reason to learn from the tournament games.  for
+                # the "full" model, we want to learn the tournament transformation,
+                # so it does make sense to learn from tourney games
+                LEARN_FROM_TOURNEY = False
+                if LEARN_FROM_TOURNEY:
+                    obj_g = train_fn(team1_id, team2_loc, team2_id, team2_loc,
+                                     team1_score, team2_score, learning_rate)
+                    obj += obj_g
 
             # TODO: test regular season updates
         
