@@ -1,3 +1,4 @@
+import sys
 from model import *
 from march_madness_data import *
 
@@ -62,7 +63,7 @@ if __name__ == "__main__":
 
     for t in range(NUM_ITS):
         obj = 0
-        learning_rate = BASE_LEARNING_RATE / (1.0 + np.sqrt(t))
+        learning_rate = np.float32(BASE_LEARNING_RATE / (1.0 + np.sqrt(t)))
         for season in train_seasons:
             print t, season
             train_fn = train_fns[s]
