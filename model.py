@@ -7,6 +7,14 @@ LOCATION_AWAY = 1
 LOCATION_TOURNEY = 2
 
 
+def validation_loss(pred_score1, pred_score2, score1, score2,
+                    method="sqerr"):
+    if method == "sqerr":
+        return (pred_score1 - score1)**2 + (pred_score2 - score2)**2
+    elif method == "zero-one":
+        return (pred_score1 > pred_score2 and score2 > score1) or \
+               (pred_score2 > pred_score1 and score1 > score2)
+
 
 def make_simplest_learning_functions(num_teams, D0, H, D, Hp, reg_param1,
                                      reg_param2, xform_params=None):
@@ -101,12 +109,12 @@ def make_vanilla_pmf_functions(num_teams, D0, H, D, Hp, reg_param1,
 
     # Initialize latent vectors
     offense0_vals = np.asarray(rng.uniform(
-        low  = -np.sqrt(6./(num_teams+D0)),
-        high =  np.sqrt(6./(num_teams+D0)),
+        low  = -np.sqrt(1./(num_teams+D0)),
+        high =  np.sqrt(1./(num_teams+D0)),
         size = (num_teams, D)), dtype=theano.config.floatX)
     defense0_vals = np.asarray(rng.uniform(
-        low  = -np.sqrt(6./(num_teams+D0)),
-        high =  np.sqrt(6./(num_teams+D0)),
+        low  = -np.sqrt(1./(num_teams+D0)),
+        high =  np.sqrt(1./(num_teams+D0)),
         size = (num_teams, D)), dtype=theano.config.floatX)
         
     offenses0 = theano.shared(value=offense0_vals, name="offenses0")
