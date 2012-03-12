@@ -1,7 +1,6 @@
 import pickle
 import numpy
 import re
-from march_madness_data import *
 
 class Bracket:
 
@@ -32,9 +31,10 @@ class Bracket:
 
         for game in self.round[r]:
             date, home_id, away_id, home_score, away_score = game
-            if home_id == team_id: return away_id
+            if   home_id == team_id: return away_id
             elif away_id == team_id: return home_id
 
+        assert False, "Did not find opponent for %s in %s" % (team_id, self.round[r])
         return None
 
 
@@ -50,6 +50,9 @@ class Bracket:
         date, home_id, away_id, home_score, away_score = self.round[5][0]
         winner_id = home_id if home_score > away_score else away_id
         loser_id = away_id if home_score > away_score else home_id
+
+        assert winner_id is not None
+        assert loser_id is not None
         
         self.bracket[5][0] = winner_id
         self.bracket[5][1] = loser_id
@@ -66,6 +69,9 @@ class Bracket:
 
                 loser_id = self.opponent_in_round(winner_id, r-1)
                 self.bracket[r-1][i*2+1] = loser_id
+
+                assert winner_id is not None
+                assert loser_id is not None
 
         if team_codes is not None:
             # replace ids with team codes
@@ -111,6 +117,7 @@ class Bracket:
     
 
 if __name__ == '__main__':
+    from march_madness_data import *
 
     data = MarchMadnessData()
 

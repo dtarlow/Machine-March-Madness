@@ -8,7 +8,7 @@ def train(data, split):
 
     N  = len(data.team_codes)  # num teams
     # only used for matrix factorization algorithms
-    D  = 1    # output latent vector dimension
+    D  = 2    # output latent vector dimension
     Hp = 5     # hidden units for pacing component
     
     # only used for matrix factorization algorithms
@@ -21,7 +21,7 @@ def train(data, split):
     NUM_ITS = 20
 
     SEASONS_ARE_INDEPENDENT = True
-    seasons = ["2006-2007", "2007-2008", "2008-2009", "2009-2010"]
+    seasons = ["2006-2007", "2007-2008", "2008-2009", "2009-2010", "2010-2011"]
     train_on_season, train_on_tourney, test_on_tourney = {}, {}, {}
     
     for s, season in enumerate(seasons):
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     try:
         splits = [int(sys.argv[1])]
     except:
-        splits = [0, 1, 2, 3]
+        splits = [0, 1, 2, 3, 4]
 
     data = MarchMadnessData()
 
