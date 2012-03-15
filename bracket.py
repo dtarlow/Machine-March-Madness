@@ -18,13 +18,38 @@ class Bracket:
 
         non_white_re = re.compile(r'\w+')
 
-        self.bracket = []
+        self.starting_teams = []
         for line in f:
             line = line.strip()
             m = non_white_re.search(line)
             if m is not None:
-                self.bracket.append(line)    
+                self.starting_teams.append(line)    
 
+
+    def predict_tournament(self, out_fn, team_code_to_id):
+        self.bracket[0] = []
+        for team in self.starting_teams:
+            self.bracket[0].append(team)
+
+        print "initial b[0]"
+        print self.bracket[0]
+
+        for r in range(self.num_rounds):
+            self.bracket[r+1] = []
+            for g in range(len(self.bracket[r]) / 2):
+                t1 = self.bracket[r][2*g]
+                t2 = self.bracket[r][2*g+1]
+
+                t1_id = team_code_to_id[t1]
+                t2_id = team_code_to_id[t2]
+
+                t1_score, t2_score = out_fn(t1_id, 2, t2_id, 2)  # 2 means tournament game
+
+                if t1_score > t2_score:  self.bracket[r+1].append(t1)
+                else:                    self.bracket[r+1].append(t2)
+
+        self.print_full()
+        
 
     def opponent_in_round(self, team_id, r):
         """ Find who team <team> played in round <r> """
